@@ -47,7 +47,8 @@ const float gravity = -0.2f;
 #define ALPHA 1
 const int MAX_BULLETS = 11;
 const Flt MINIMUM_ASTEROID_SIZE = 60.0;
-
+const int INT_BULLET = 0.1;
+const int MAX_SPEED = 15.0f;
 //-----------------------------------------------------------------------------
 //Setup timers
 const double oobillion = 1.0 / 1e9;
@@ -155,9 +156,9 @@ public:
 			a->pos[2] = 0.0f;
 			a->angle = 0.0;
 			a->rotate = rnd() * 4.0 - 2.0;
-			a->color[0] = 0.8;
-			a->color[1] = 0.8;
-			a->color[2] = 0.7;
+			a->color[0] = double (rand())/(double(RAND_MAX)+1.0); 
+			a->color[1] =  double (rand())/(double(RAND_MAX)+1.0); 
+			a->color[2] =  double (rand())/(double(RAND_MAX)+1.0); 
 			a->vel[0] = (Flt)(rnd()*2.0-1.0);
 			a->vel[1] = (Flt)(rnd()*2.0-1.0);
 			//std::cout << "asteroid" << std::endl;
@@ -370,7 +371,7 @@ void check_mouse(XEvent *e)
 			struct timespec bt;
 			clock_gettime(CLOCK_REALTIME, &bt);
 			double ts = timeDiff(&g.bulletTimer, &bt);
-			if (ts > 0.1) {
+			if (ts > INT_BULLET) {
 				timeCopy(&g.bulletTimer, &bt);
 				//shoot a bullet...
 				if (g.nbullets < MAX_BULLETS) {
@@ -430,8 +431,8 @@ void check_mouse(XEvent *e)
 				g.ship.vel[1] += ydir * (float)ydiff * 0.001f;
 				Flt speed = sqrt(g.ship.vel[0]*g.ship.vel[0]+
 					g.ship.vel[1]*g.ship.vel[1]);
-				if (speed > 15.0f) {
-					speed = 15.0f;
+				if (speed > MAX_SPEED) {
+					speed = MAX_SPEED;
 					normalize2d(g.ship.vel);
 					g.ship.vel[0] *= speed;
 					g.ship.vel[1] *= speed;
@@ -527,9 +528,9 @@ void buildAsteroidFragment(Asteroid *ta, Asteroid *a)
 	ta->pos[2] = 0.0f;
 	ta->angle = 0.0;
 	ta->rotate = a->rotate + (rnd() * 4.0 - 2.0);
-	ta->color[0] = 0.8;
-	ta->color[1] = 0.8;
-	ta->color[2] = 0.7;
+	ta->color[0] = a->color[0];
+	ta->color[1] = a->color[1];
+	ta->color[2] = a-> color[2];
 	ta->vel[0] = a->vel[0] + (rnd()*2.0-1.0);
 	ta->vel[1] = a->vel[1] + (rnd()*2.0-1.0);
 }
