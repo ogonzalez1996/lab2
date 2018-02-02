@@ -128,10 +128,7 @@ public:
 	struct timespec mouseThrustTimer;
 	bool mouseThrustOn;
 public:
-	Game() {
-			srand(time(NULL));
-                      	int gh = rand() % 2;
-		
+	Game()	{
 	        ahead = NULL;
 		barr = new Bullet[MAX_BULLETS];
 		nasteroids = 0;
